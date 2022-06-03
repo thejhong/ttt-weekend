@@ -23,14 +23,16 @@ let winner
 
 // a) In a constant called `squareEls`, store the nine elements representing 
 //    the squares on the page.
-const squareEls = document.querySelector(".board-div")
+const squareEls = document.querySelectorAll(".board-div")
 // b) In a constant called `messageEl`, store the element that displays the 
 //    game's status on the page.
-const messageEl = document.querySelectorAll("#message")
-const resetBtn = document.querySelector('button')
+const messageEl = document.querySelector("#message")
+const resetBtnEl = document.querySelector("button")
 
-squareEls.addEventListener("click", handleClick)
-resetBtnEl.addEventListener("click", init)
+squareEls.forEach(function(square) {
+  square.addEventListener('click', handleClick)
+})
+resetBtnEl.addEventListener('click', init)
 
   
 // Step 3 - Upon loading, the game state should be initialized, and a function 
@@ -60,14 +62,14 @@ function render() {
   //      square in the `squareEls` array.
   //    - Style that square however you wish, dependent on the value contained 
   //      in the current cell being iterated over (`-1`, `1`, or `null`).
-    board.forEach(function(square, idx){
-      if (square === 1) {
-        squareEls[idx].textContent ='X'
-      } else if (square === -1) {
-        squareEls[idx].textContent = 'O'
-      } else if (square === null) {
-        squareEls[idx].textContent = null
-    }}
+board.forEach(function(square, idx){
+  if (square === 1) {
+  squareEls[idx].textContent ='X'
+  } else if (square === -1) {
+  squareEls[idx].textContent = 'O'
+  } else if (square === null) {
+  squareEls[idx].textContent = null
+  }}
   )
 
   // c) Render a message based on the current game state:
@@ -81,7 +83,7 @@ if (winner === null) {
   messageEl.textContent = "It's a tie"
 } else {
   winner === 1 ? messageEl.textContent = "Player 1 has won!" : messageEl.textContent = "Player 2 has won!"
-}
+}}
 
 // Step 5 - Define the required constants
 
@@ -93,27 +95,26 @@ if (winner === null) {
 
   // a) Create a function called `handleClick`. It will have an `evt` parameter.
 
-function handleClick(evt){
+function handleClick(evt) {
   // b) Attach an event listener to the game board. On the `'click'` event, it 
   //    should call the `handleClick` function you created in 6a.
 
   // c) Obtain the index of the square that was clicked by "extracting" the 
   //    index from an `id` assigned to the element in the HTML. Assign this to 
   //    a constant called `sqIdx`.
-  const sqIdx = parseInt(evt.target.id.substring(2))
+  const sqIdx = parseInt(evt.target.id.slice(2))
   // d) If the `board` has a value at the `sqIdx`, immediately `return` because 
   //    that square is already taken. Also, if `winner` is not `null`
   //    immediately `return` because the game is over.
-  if (board[sqIdx] !== null) {
+  if (board[sqIdx] !== null || winner !== null) {
     return
-  } else if (winner !== null) {
-    return
-  } else {
-    board[sqIdx] = turn
-  }
+  } 
+
+ 
+
   // e) Update the `board` array at the `sqIdx` with the current value of
   //    `turn`.
-board[sqIdx] = turn
+  board[sqIdx] = turn
   // f) Change the turn by multiplying `turn` by `-1` (this flips a `1` to
   //    `-1`, and vice-versa).
 turn = turn *= -1
@@ -162,7 +163,7 @@ function getWinner () {
 
   // d) If there is no winner and there isn’t a tie, return `null`.
 
-for (let i = 0; i < winningCombos.length; i++) {
+  for (let i = 0; i < winningCombos.length; i++) {
   if (board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]] === 3) {
     winner = 1
 } else if
@@ -172,7 +173,7 @@ for (let i = 0; i < winningCombos.length; i++) {
   return null
 }}
   render()
-}}
+}
   
 
 // Step 8 - Create Reset functionality
@@ -183,3 +184,6 @@ for (let i = 0; i < winningCombos.length; i++) {
 
   // c) Attach an event listener to the `resetBtnEl`. On the `'click'` event it 
   //    should call the `init` function you created in 3.
+ 
+
+
