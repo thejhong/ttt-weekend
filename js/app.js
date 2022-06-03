@@ -1,29 +1,38 @@
 // Step 1 - Define the required variables used to track the state of the game
 
-  // a) Use a variable named `board` to represent the state of the squares on
-  //    the board.
+const winningCombos = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+// a) Use a variable named `board` to represent the state of the squares on
+//    the board.
 let board 
-  // b) Use a variable named `turn` to track whose turn it is.
+// b) Use a variable named `turn` to track whose turn it is.
 let turn
-  // c) Use a variable named `winner` to represent if anyone has won yet, or if 
-  //    a tie has occurred.
+// c) Use a variable named `winner` to represent if anyone has won yet, or if 
+//    a tie has occurred.
 let winner
 // Step 2 - Store cached element references
 
-  // a) In a constant called `squareEls`, store the nine elements representing 
-  //    the squares on the page.
-const squareEls = document.querySelectorAll(".board-div")
-  // b) In a constant called `messageEl`, store the element that displays the 
-  //    game's status on the page.
-const messageEl =document.querySelector("#message")
-const resetBtnEl = document.querySelector('button')
+// a) In a constant called `squareEls`, store the nine elements representing 
+//    the squares on the page.
+const squareEls = document.querySelector(".board-div")
+// b) In a constant called `messageEl`, store the element that displays the 
+//    game's status on the page.
+const messageEl = document.querySelectorAll("#message")
+const resetBtn = document.querySelector('button')
 
-squareEls.forEach(function(square) {
-  square.addEventListener('click', handleClick)
-}) 
+squareEls.addEventListener("click", handleClick)
+resetBtnEl.addEventListener("click", init)
 
-resetBtnEl.addEventListener('click', init)
-
+  
 // Step 3 - Upon loading, the game state should be initialized, and a function 
 //          should be called to render this game state
 
@@ -66,51 +75,42 @@ function render() {
   //      progress), render whose turn it is.
   //    - If `winner` is equal to `'T'` (tie), render a tie message.
   //    - Otherwise, render a congratulatory message to the player that has won.
-  if (winner === 'T') {
-    messageEl.textContent = "It's a tie.";
-  } else if (winner === 1){
-    messageEl.textContent = "Player 1 has won."
-  } else if (winner === -1) {
-    messageEl.textContent = "Player 2 has won."
-  }
+if (winner === null) {
+  turn ===1 ? messageEl.textContent = "Player 1 turn": messageEl.textContent = "Player 2 turn"
+} else if (winner === "T") {
+  messageEl.textContent = "It's a tie"
+} else {
+  winner === 1 ? messageEl.textContent = "Player 1 has won!" : messageEl.textContent = "Player 2 has won!"
 }
 
 // Step 5 - Define the required constants
 
   // a) In a constant called `winningCombos` define the eight possible winning 
   //    combinations as an array of arrays.
-  const winningCombos = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  
 
 // Step 6 - Handle a player clicking a square with a `handleClick` function
 
   // a) Create a function called `handleClick`. It will have an `evt` parameter.
-function handleClick(evt) {
 
-
+function handleClick(evt){
   // b) Attach an event listener to the game board. On the `'click'` event, it 
   //    should call the `handleClick` function you created in 6a.
 
   // c) Obtain the index of the square that was clicked by "extracting" the 
   //    index from an `id` assigned to the element in the HTML. Assign this to 
   //    a constant called `sqIdx`.
-const sqIdx  = parseInt(evt.target.id.substring(2))
+  const sqIdx = parseInt(evt.target.id.substring(2))
   // d) If the `board` has a value at the `sqIdx`, immediately `return` because 
   //    that square is already taken. Also, if `winner` is not `null`
   //    immediately `return` because the game is over.
-if(board[sqIdx] != null) {
-  return
-} if (winner != null){
-  return
-}
+  if (board[sqIdx] !== null) {
+    return
+  } else if (winner !== null) {
+    return
+  } else {
+    board[sqIdx] = turn
+  }
   // e) Update the `board` array at the `sqIdx` with the current value of
   //    `turn`.
 board[sqIdx] = turn
@@ -123,7 +123,6 @@ getWinner ()
   // h) All the state has been updated so we need to render our updated state 
   //    to the user by calling the `render` function we wrote earlier.
 render()
-
 }
 
 // Step 7 - Build the `getWinner` function
@@ -173,7 +172,7 @@ for (let i = 0; i < winningCombos.length; i++) {
   return null
 }}
   render()
- }
+}}
   
 
 // Step 8 - Create Reset functionality
