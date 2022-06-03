@@ -12,16 +12,23 @@ let winner
 
   // a) In a constant called `squareEls`, store the nine elements representing 
   //    the squares on the page.
-  const squareEls = document.querySelector("squares")
+const squareEls = document.querySelectorAll(".board-div")
   // b) In a constant called `messageEl`, store the element that displays the 
   //    game's status on the page.
 const messageEl =document.querySelector("#message")
+const resetBtnEl = document.querySelector('button')
+
+squareEls.forEach(function(square) {
+  square.addEventListener('click', handleClick)
+}) 
+
+resetBtnEl.addEventListener('click', init)
 
 // Step 3 - Upon loading, the game state should be initialized, and a function 
 //          should be called to render this game state
 
   // a) Create a function called `init`.
-Init()
+init()
   // b) Call this `init` function when the app loads.
 function init () {
 
@@ -36,24 +43,23 @@ winner = null
   // f) Call a function called `render` at the end of the `init` function.
 render ()
 // Step 4 - The state of the game should be rendered to the user
-};
-  // a) Create a function called `render`.
-function render (){
-
 }
+  // a) Create a function called `render`.
+function render() {
   // b) Loop over `board` and for each element:
   //    - Use the current index of the iteration to access the corresponding 
   //      square in the `squareEls` array.
   //    - Style that square however you wish, dependent on the value contained 
   //      in the current cell being iterated over (`-1`, `1`, or `null`).
-  board.forEach(function(square, index){
-    if(square === 1) {
-      square[index].textContect = 'X'
-      else if (square === -1) {
-        sqareEls[index].textContect = 'O'
-      }
-    }
-  });
+    board.forEach(function(square, idx){
+      if (square === 1) {
+        squareEls[idx].textContent ='X'
+      } else if (square === -1) {
+        squareEls[idx].textContent = 'O'
+      } else if (square === null) {
+        squareEls[idx].textContent = null
+    }}
+  )
 
   // c) Render a message based on the current game state:
   //    - If winner has a value of `null` (meaning the game is still in
@@ -67,6 +73,7 @@ function render (){
   } else if (winner === -1) {
     messageEl.textContent = "Player 2 has won."
   }
+}
 
 // Step 5 - Define the required constants
 
@@ -86,6 +93,8 @@ function render (){
 // Step 6 - Handle a player clicking a square with a `handleClick` function
 
   // a) Create a function called `handleClick`. It will have an `evt` parameter.
+function handleClick(evt) {
+
 
   // b) Attach an event listener to the game board. On the `'click'` event, it 
   //    should call the `handleClick` function you created in 6a.
@@ -93,27 +102,34 @@ function render (){
   // c) Obtain the index of the square that was clicked by "extracting" the 
   //    index from an `id` assigned to the element in the HTML. Assign this to 
   //    a constant called `sqIdx`.
-
+const sqIdx  = parseInt(evt.target.id.substring(2))
   // d) If the `board` has a value at the `sqIdx`, immediately `return` because 
   //    that square is already taken. Also, if `winner` is not `null`
   //    immediately `return` because the game is over.
-
+if(board[sqIdx] != null) {
+  return
+} if (winner != null){
+  return
+}
   // e) Update the `board` array at the `sqIdx` with the current value of
   //    `turn`.
-
+board[sqIdx] = turn
   // f) Change the turn by multiplying `turn` by `-1` (this flips a `1` to
   //    `-1`, and vice-versa).
-
+turn = turn *= -1
   // g) Set the `winner` variable if there's a winner by calling a new 
   //    function: `getWinner`.
-
+getWinner ()
   // h) All the state has been updated so we need to render our updated state 
   //    to the user by calling the `render` function we wrote earlier.
+render()
+
+}
 
 // Step 7 - Build the `getWinner` function
 
   // a) Create a function called `getWinner`
-
+function getWinner () {
   /* 
    * There are two methods you can use to find out if there is a winner.
    *
@@ -146,6 +162,19 @@ function render (){
   //    returning the string `'T'`.
 
   // d) If there is no winner and there isn’t a tie, return `null`.
+
+for (let i = 0; i < winningCombos.length; i++) {
+  if (board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]] === 3) {
+    winner = 1
+} else if
+  (board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]] === -3) {
+  winner = -1
+} else {
+  return null
+}}
+  render()
+ }
+  
 
 // Step 8 - Create Reset functionality
 
