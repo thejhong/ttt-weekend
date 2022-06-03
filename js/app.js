@@ -164,13 +164,18 @@ function getWinner () {
   // d) If there is no winner and there isn’t a tie, return `null`.
 
   for (let i = 0; i < winningCombos.length; i++) {
-  if (board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]] === 3) {
-    winner = 1
-} else if
-  (board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]] === -3) {
-  winner = -1
-} else {
-  return null
+  let sum = board[winningCombos[i][0]] + board[winningCombos[i][1]] + board[winningCombos[i][2]]
+    if (sum === 3) {
+    winner = 1  
+    return
+  } else  if (sum === -3) {
+    winner = -1
+        return
+  } else if (board.includes(null) === false) {
+    winner = 'T'
+        return
+  } else {
+    winner = null
 }}
   render()
 }
